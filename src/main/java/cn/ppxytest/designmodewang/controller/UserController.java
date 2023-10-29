@@ -1,7 +1,7 @@
 package cn.ppxytest.designmodewang.controller;
 
 import cn.ppxytest.designmodewang.pojo.UserInfo;
-import cn.ppxytest.designmodewang.service.Login3rdAdapter;
+import cn.ppxytest.designmodewang.adapter.Login3rdAdapter;
 import cn.ppxytest.designmodewang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

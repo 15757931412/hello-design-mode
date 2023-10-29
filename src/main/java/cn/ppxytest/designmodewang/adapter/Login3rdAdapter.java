@@ -1,6 +1,7 @@
-package cn.ppxytest.designmodewang.service;
+package cn.ppxytest.designmodewang.adapter;
 
 import cn.ppxytest.designmodewang.pojo.UserInfo;
+import cn.ppxytest.designmodewang.service.UserService;
 import cn.ppxytest.designmodewang.util.HttpClientUtils;
 import com.alibaba.fastjson2.JSONObject;
 import org.springframework.beans.factory.annotation.Value;

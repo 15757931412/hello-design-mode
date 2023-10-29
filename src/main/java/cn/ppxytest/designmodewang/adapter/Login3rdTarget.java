@@ -1,4 +1,4 @@
-package cn.ppxytest.designmodewang.service;
+package cn.ppxytest.designmodewang.adapter;
 
 public interface Login3rdTarget {
     public String loginByGitee(String code, String state);

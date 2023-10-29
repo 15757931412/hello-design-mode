@@ -1,5 +1,6 @@
-package cn.ppxytest.designmodewang.service;
+package cn.ppxytest.designmodewang.adapter;
 
+import cn.ppxytest.designmodewang.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
