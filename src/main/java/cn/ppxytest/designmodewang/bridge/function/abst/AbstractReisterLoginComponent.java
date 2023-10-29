@@ -17,11 +17,11 @@ public abstract class AbstractReisterLoginComponent {
             throw new UnsupportedOperationException("Unknown register login function type");
         }
     }
-    protected abstract String login(String username,String password);
+    public abstract String login(String username, String password);
 
-    protected abstract String register(UserInfo userInfo);
+    public abstract String register(UserInfo userInfo);
 
     protected abstract boolean checkUserExists(String username);
 
-    protected abstract String login3rd(HttpServletRequest request);
+    public abstract String login3rd(HttpServletRequest request);
 }

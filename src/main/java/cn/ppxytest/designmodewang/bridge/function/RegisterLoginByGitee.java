@@ -1,9 +1,11 @@
 package cn.ppxytest.designmodewang.bridge.function;
 
+import cn.ppxytest.designmodewang.bridge.function.abst.RegisterLoginComponentFactory;
 import cn.ppxytest.designmodewang.pojo.UserInfo;
 import cn.ppxytest.designmodewang.repo.UserRepository;
 import cn.ppxytest.designmodewang.util.HttpClientUtils;
 import com.alibaba.fastjson2.JSONObject;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,5 +61,9 @@ public class RegisterLoginByGitee extends AbstractReisterLoginFunc implements Re
         return login(userName, password);
     }
 
+    @PostConstruct
+    private void initFuncMap(){
+        RegisterLoginComponentFactory.funcMap.put("GITEE", this);
+    }
 
 }

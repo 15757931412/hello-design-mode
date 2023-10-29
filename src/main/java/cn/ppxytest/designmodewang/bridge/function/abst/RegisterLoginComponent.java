@@ -10,12 +10,12 @@ public class RegisterLoginComponent extends AbstractReisterLoginComponent{
     }
 
     @Override
-    protected String login(String username, String password) {
+    public String login(String username, String password) {
         return funcInterface.login(username, password);
     }
 
     @Override
-    protected String register(UserInfo userInfo) {
+    public String register(UserInfo userInfo) {
         return funcInterface.register(userInfo);
     }
 
@@ -25,7 +25,7 @@ public class RegisterLoginComponent extends AbstractReisterLoginComponent{
     }
 
     @Override
-    protected String login3rd(HttpServletRequest request) {
+    public String login3rd(HttpServletRequest request) {
         return funcInterface.login3rd(request);
     }
 }
