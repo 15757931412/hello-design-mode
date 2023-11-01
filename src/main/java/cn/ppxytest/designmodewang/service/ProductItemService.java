@@ -1,9 +1,13 @@
 package cn.ppxytest.designmodewang.service;
 
+import cn.ppxytest.designmodewang.items.composite.AbstractProductItem;
 import cn.ppxytest.designmodewang.items.composite.ProductComposite;
 import cn.ppxytest.designmodewang.pojo.ProductItem;
 import cn.ppxytest.designmodewang.repo.ProductItemRepository;
 import cn.ppxytest.designmodewang.util.RedisCommonProcessor;
+import cn.ppxytest.designmodewang.vistor.AddItemVistor;
+import cn.ppxytest.designmodewang.vistor.DelItemVisitor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,35 @@ public class ProductItemService {
     private RedisCommonProcessor redisCommonProcessor;
     @Autowired
     private ProductItemRepository productItemRepository;
+    @Autowired
+    private AddItemVistor addItemVistor;
+    @Autowired
+    private DelItemVisitor delItemVisitor;
+
+    public ProductComposite addItem(ProductItem item){
+        productItemRepository.addItem(item.getName(), item.getPid());
+        ProductComposite addItem = ProductComposite.builder()
+                .id(productItemRepository.findByNameAndPid(item.getName(), item.getPid()).getId())
+                .name(item.getName())
+                .pid(item.getPid())
+                .child(new ArrayList<>())
+                .build();
+        AbstractProductItem updateItem = addItemVistor.vistor(addItem);
+        redisCommonProcessor.set("item", updateItem);
+        return (ProductComposite) updateItem;
+    }
+
+    public ProductComposite delItems(ProductItem item){
+        productItemRepository.delItem(item.getId());
+        ProductComposite delItem = ProductComposite.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .pid(item.getPid())
+                .build();
+                AbstractProductItem updateItem = delItemVisitor.vistor(delItem);
+                redisCommonProcessor.set("item", updateItem);
+                return (ProductComposite) updateItem;
+    }
 
     public ProductComposite fetchAllItems() {
         Object cacheItems = redisCommonProcessor.get("item");
