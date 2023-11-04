@@ -18,6 +18,8 @@ public class DeprecatedPayOrder extends DeprecatedAbstractOrderState {
 
         order.setState(ORDER_WAIT_SEND);
         redisCommonProcessor.set(orderId,order);
+
+        super.notifyObserver(orderId,ORDER_WAIT_SEND);
         return order;
     }
 }

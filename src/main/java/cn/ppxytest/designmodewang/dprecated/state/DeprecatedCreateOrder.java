@@ -18,6 +18,8 @@ public class DeprecatedCreateOrder extends DeprecatedAbstractOrderState{
                 .build();
 
         redisCommonProcessor.set(orderId,order,900);
+
+        super.notifyObserver(orderId,ORDER_WAIT_PAY);
         return order;
     }
 }
