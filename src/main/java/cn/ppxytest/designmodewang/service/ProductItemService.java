@@ -10,6 +10,7 @@ import cn.ppxytest.designmodewang.vistor.DelItemVisitor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,8 @@ public class ProductItemService {
     @Autowired
     private DelItemVisitor delItemVisitor;
 
-    public ProductComposite addItem(ProductItem item){
+    @Transactional
+    public ProductComposite addItem(ProductItem item) {
         productItemRepository.addItem(item.getName(), item.getPid());
         ProductComposite addItem = ProductComposite.builder()
                 .id(productItemRepository.findByNameAndPid(item.getName(), item.getPid()).getId())
@@ -42,16 +44,13 @@ public class ProductItemService {
         return (ProductComposite) updateItem;
     }
 
-    public ProductComposite delItems(ProductItem item){
+    @Transactional
+    public ProductComposite delItems(ProductItem item) {
         productItemRepository.delItem(item.getId());
-        ProductComposite delItem = ProductComposite.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .pid(item.getPid())
-                .build();
-                AbstractProductItem updateItem = delItemVisitor.vistor(delItem);
-                redisCommonProcessor.set("item", updateItem);
-                return (ProductComposite) updateItem;
+        ProductComposite delItem = ProductComposite.builder().id(item.getId()).name(item.getName()).pid(item.getPid()).build();
+        AbstractProductItem updateItem = delItemVisitor.vistor(delItem);
+        redisCommonProcessor.set("item", updateItem);
+        return (ProductComposite) updateItem;
     }
 
     public ProductComposite fetchAllItems() {
@@ -70,16 +69,13 @@ public class ProductItemService {
     }
 
     private ProductComposite generateProductTree(List<ProductItem> fetchDbItems) {
-        List<ProductComposite> composites = fetchDbItems.stream().map(i -> ProductComposite.builder()
-                .id(i.getId())
-                .name(i.getName())
-                .pid(i.getPid())
-                .build()
-        ).toList();
+        List<ProductComposite> composites = fetchDbItems.stream().map(i -> ProductComposite.builder().id(i.getId()).name(i.getName()).pid(i.getPid()).build()).toList();
         Map<Integer, List<ProductComposite>> collect = composites.stream().collect(Collectors.groupingBy(ProductComposite::getPid));
-        composites.stream().forEach(item->{
+        composites.stream().forEach(item -> {
             List<ProductComposite> list = collect.get(item.getId());
-            item.setChild(list==null? Collections.emptyList():);
+            item.setChild(list == null ? new ArrayList<>() : list.stream().map(x -> (AbstractProductItem) x).toList());
         });
+        ProductComposite composite = composites.isEmpty() ? null : composites.get(0);
+        return composite;
     }
 }

@@ -1,10 +1,7 @@
 package cn.ppxytest.designmodewang.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cn.ppxytest.designmodewang.items.composite.ProductComposite;
 import cn.ppxytest.designmodewang.pojo.ProductItem;
@@ -16,14 +13,19 @@ public class ProductItemController {
 
     @Autowired
     private ProductItemService productItemService;
-    
+
     @PostMapping("/addItems")
-    public ProductComposite addItems(@RequestBody ProductItem item){   
+    public ProductComposite addItems(@RequestBody ProductItem item) {
         return productItemService.addItem(item);
     }
 
     @PostMapping("/delItems")
-    public ProductComposite delItem(@RequestBody ProductItem item){
+    public ProductComposite delItem(@RequestBody ProductItem item) {
         return productItemService.delItems(item);
+    }
+
+    @GetMapping("/all")
+    public ProductComposite fetchAll() {
+        return productItemService.fetchAllItems();
     }
 }

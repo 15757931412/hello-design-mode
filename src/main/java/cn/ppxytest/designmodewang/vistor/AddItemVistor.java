@@ -18,6 +18,7 @@ public class AddItemVistor implements ItemVistor<AbstractProductItem>{
         ProductComposite currentItem = (ProductComposite) redisCommonProcessor.get("item");
         ProductComposite addItem = (ProductComposite)productItem;
 
+        // 如果是父节点那么直接添加，不是父节点递归
         if(addItem.getPid()==currentItem.getId()){
             currentItem.addProductItem(addItem);
             return currentItem;
@@ -29,7 +30,7 @@ public class AddItemVistor implements ItemVistor<AbstractProductItem>{
     private void addChiled(ProductComposite addItem, ProductComposite currentItem) {
         for (AbstractProductItem child : currentItem.getChild()) {
             ProductComposite item = (ProductComposite) child;
-            if(item.getPid()==addItem.getPid()){
+            if(item.getId()==addItem.getPid()){
                 item.addProductItem(addItem);
                 break;
             }else{

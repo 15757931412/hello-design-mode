@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cn.ppxytest.designmodewang.items.composite.AbstractProductItem;
 import cn.ppxytest.designmodewang.items.composite.ProductComposite;
 import cn.ppxytest.designmodewang.util.RedisCommonProcessor;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DelItemVisitor implements ItemVistor<AbstractProductItem>{
     @Autowired
     private RedisCommonProcessor redisCommonProcessor;
