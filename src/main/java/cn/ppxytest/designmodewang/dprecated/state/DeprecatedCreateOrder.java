@@ -1,11 +1,14 @@
 package cn.ppxytest.designmodewang.dprecated.state;
 
+import cn.ppxytest.designmodewang.dprecated.DeprecatedConstants;
 import cn.ppxytest.designmodewang.util.RedisCommonProcessor;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DeprecatedCreateOrder extends DeprecatedAbstractOrderState{
+
     @Autowired
     private RedisCommonProcessor redisCommonProcessor;
 
