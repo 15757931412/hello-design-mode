@@ -1,7 +1,10 @@
 package cn.ppxytest.designmodewang.service;
 
+import cn.ppxytest.designmodewang.ordermanagement.command.OrderCommand;
+import cn.ppxytest.designmodewang.ordermanagement.command.invoker.OrderCommandInvoker;
 import cn.ppxytest.designmodewang.ordermanagement.state.OrderState;
 import cn.ppxytest.designmodewang.ordermanagement.state.OrderStateChangeAction;
+import cn.ppxytest.designmodewang.pay.facade.PayFacade;
 import cn.ppxytest.designmodewang.pojo.Order;
 import cn.ppxytest.designmodewang.util.RedisCommonProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,14 @@ public class OrderService {
     private StateMachinePersister<OrderState, OrderStateChangeAction, String> stateMachineRedisPersister;
     @Autowired
     private RedisCommonProcessor redisCommonProcessor;
+    @Autowired
+    private OrderCommand orderCommand;
 
     public Order createOrder(String productId) {
         String orderId = "OID" + productId;
         Order order = Order.builder().orderId(orderId).productId(productId).orderState(OrderState.ORDER_WAIT_PAY).build();
+        OrderCommandInvoker invoker = new OrderCommandInvoker();
+        invoker.invoke(orderCommand,order);
         redisCommonProcessor.set(order.getOrderId(), order, 900);
         return order;
     }
@@ -68,5 +75,13 @@ public class OrderService {
         }
 
         return null;
+    }
+
+    @Autowired
+    private PayFacade payFacade;
+    public String getPayUrl(String orderId, Float price, Integer payType) {
+        Order order = (Order) redisCommonProcessor.get(orderId);
+        order.setPrice(price);
+        return payFacade.pay(order, payType);
     }
 }
