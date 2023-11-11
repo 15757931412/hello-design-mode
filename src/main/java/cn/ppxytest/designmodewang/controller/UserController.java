@@ -24,6 +24,11 @@ public class UserController {
         return userService.filterBusinessLaunch(city, sex, product);
     }
 
+    @PostMapping("/ticket")
+    public Object createTicket(String type, String productId, String content, String title, String bankInfo, String taxId) {
+        return userService.createTicket(type, productId, content, title,bankInfo, taxId);
+
+    }
     @PostMapping("/login")
     public String login(String account, String password) {
         return userService.login(account, password);

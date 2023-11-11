@@ -7,6 +7,7 @@ import cn.ppxytest.designmodewang.pojo.BusinessLaunch;
 import cn.ppxytest.designmodewang.pojo.UserInfo;
 import cn.ppxytest.designmodewang.repo.BussinessLaunchRepository;
 import cn.ppxytest.designmodewang.repo.UserRepository;
+import cn.ppxytest.designmodewang.ticket.proxy.DirectorProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,13 @@ public class UserService {
     public List<BusinessLaunch> filterBusinessLaunch(String city, String sex, String product) {
         List<BusinessLaunch> launchLst = bussinessLaunchRepository.findAll();
         return buildChain().processHandler(launchLst, city, sex, product);
+    }
+
+    @Autowired
+    private DirectorProxy directorProxy;
+
+    public Object createTicket(String type, String productId, String content,String title, String bankInfo, String taxId) {
+        return directorProxy.buildTicket(type, productId, content, title, bankInfo, taxId);
     }
 
     private AbstractBusinessHandler buildChain() {

@@ -11,3 +11,9 @@ create table if not exists business_launch(
   target_sex varchar(20),
   target_product varchar(32)
 );
+
+create table if not exists products(
+  id int auto_increment PRIMARY KEY not null,
+  product_id varchar(20) not null,
+  send_red_bag int not null
+);

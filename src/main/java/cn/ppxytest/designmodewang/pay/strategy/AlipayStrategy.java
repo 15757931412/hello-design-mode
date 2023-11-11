@@ -5,6 +5,9 @@ import cn.ppxytest.designmodewang.util.AliConstants;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
+import org.springframework.util.StringUtils;
+
+import java.util.Formatter;
 
 public class AlipayStrategy implements PayStrategyInterface {
     @Override
@@ -14,8 +17,8 @@ public class AlipayStrategy implements PayStrategyInterface {
         payRequest.setReturnUrl(AliConstants.CALLBACK_URL);
         String format = String.format("""
                 {
-                    "out_trade_no": "{}",
-                    "total_amount": "{}",
+                    "out_trade_no": "%s",
+                    "total_amount": "%s",
                     "subject": "伟山育琪",
                     "body": "商品描述",
                     "product_code": "FAST_INSTANT_TRADE_PAY"
