@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Date;
 
-public class AbstractReisterLoginFunc implements RegisterLoginFuncInterface {
+public abstract class AbstractReisterLoginFunc implements RegisterLoginFuncInterface {
     protected String commonLogin(String account, String password, UserRepository userRepository) {
         UserInfo userInfo = userRepository.findByUserNameAndUserPassword(account, password);
         if (userInfo != null) {
